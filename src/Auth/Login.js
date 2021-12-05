@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react';
-import {Box, VStack, Center} from 'native-base';
+import React, {useContext, useEffect, useState} from 'react';
+import {Box, VStack, Center, useToast} from 'native-base';
 import ar from '../../assets/lang/ar.json';
 import {SubmitButton} from '@Theme/Buttons';
 import {TextInput, PasswordInput} from '@Theme/Inputs';
@@ -15,7 +15,8 @@ const logintypo = ar.login;
 export default function () {
   const [userBody, setUserBody] = useState({username: '', password: ''});
   const authDispatch = useContext(AuthDispatchContext);
-  const {fromLogin, status} = useContext(AuthStateContext);
+  const {fromLogin, status, error} = useContext(AuthStateContext);
+  const toast = useToast();
 
   const onSubmit = () => {
     loginFlow({
@@ -23,6 +24,17 @@ export default function () {
       dispatch: authDispatch,
     });
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.show({
+        title: logintypo.auth_warning_title,
+        status: 'warning',
+        description: error,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
 
   return (
     <Box safeArea flex={1}>

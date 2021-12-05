@@ -1,10 +1,15 @@
 {
+  "loading": "Chargement",
   "login": {
     "welcome": "Bienvenu",
     "login_txt": "Connectez-vous pour continuer !",
     "input_email_label": "Nom utilisateur or email",
     "input_password_label": "Mot de passe",
     "login_button": "Connectez",
-    "loading_text": "Connecting"
+    "loading_text": "Connecting",
+    "auth_warning_title": "Adresse e-mail ou mot de passe invalide"
+  },
+  "common_elements": {
+    "logout": "Déconnectez"
   }
 }

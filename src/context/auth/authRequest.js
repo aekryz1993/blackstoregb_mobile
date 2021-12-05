@@ -1,21 +1,22 @@
 import {postApi, getApi} from '@apis';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
-export const loginFlow = ({body = {}, dispatch}) => {
-  (async () => {
+export const loginFlow = ({body = {}, dispatch, ac}) => {
+  async function login() {
     try {
       dispatch({type: 'AUTH_REQUEST'});
 
-      const response = await postApi({routePath: 'api/auth/login', body});
-
-      if (response.data.success) {
+      const response = await postApi({routePath: 'api/auth/login', body, ac});
+      if (response?.data?.success) {
         dispatch({
           type: 'LOGIN_SUCCEED',
           payload: {
             user: response.data.currentUser,
           },
         });
-        await fetchToken(dispatch);
+        await fetchToken({dispatch, ac});
+      } else {
+        throw response;
       }
     } catch (error) {
       if (error.status === 500) {
@@ -30,13 +31,14 @@ export const loginFlow = ({body = {}, dispatch}) => {
         });
       }
     }
-  })();
+  }
+  login();
 };
 
-export const fetchToken = dispatch => {
-  (async () => {
+export const fetchToken = ({dispatch, ac}) => {
+  async function fetch() {
     try {
-      const response = await getApi('api/userSession/token');
+      const response = await getApi({routePath: 'api/userSession/token', ac});
       dispatch({type: 'SETUPTOKEN', payload: {token: response?.data?.token}});
     } catch (error) {
       dispatch({
@@ -44,11 +46,12 @@ export const fetchToken = dispatch => {
         payload: {error: error.message},
       });
     }
-  })();
+  }
+  fetch();
 };
 
-export const checkSession = ({body = {}, dispatch}) => {
-  (async () => {
+export const checkSession = ({dispatch, ac}) => {
+  async function check() {
     try {
       const session = await EncryptedStorage.getItem('user_session');
       const stoken = JSON.parse(session);
@@ -57,6 +60,7 @@ export const checkSession = ({body = {}, dispatch}) => {
         const response = await postApi({
           routePath: 'api/userSession/session',
           body: stoken,
+          ac,
         });
 
         if (response.data.success) {
@@ -83,5 +87,30 @@ export const checkSession = ({body = {}, dispatch}) => {
         });
       }
     }
-  })();
+  }
+  check();
+};
+
+export const logoutFlow = ({dispatch, ac}) => {
+  async function logout() {
+    try {
+      dispatch({
+        type: 'LOGOUT_REQUEST',
+      });
+      const response = await getApi({routePath: 'api/userSession/logout', ac});
+
+      if (response?.data?.success) {
+        await EncryptedStorage.removeItem('user_session');
+        dispatch({
+          type: 'LOGOUT_SUCCEED',
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: 'SERVER_ERROR',
+        payload: {error: error.message},
+      });
+    }
+  }
+  logout();
 };

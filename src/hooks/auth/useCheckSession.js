@@ -5,42 +5,39 @@ import {
 } from '@context/auth/AuthProvider';
 import {checkSession} from '@context/auth/authRequest';
 import EncryptedStorage from 'react-native-encrypted-storage';
-// import useLocalStorage from './useLocalStorage';
 
 export default () => {
   const authDispatch = useContext(AuthDispatchContext);
-  // const [storedToken, setToken] = useLocalStorage({
-  //   key: 'user_session',
-  //   prop: 'token',
-  // });
   const {user, error, status, token, fromLogin} = useContext(AuthStateContext);
 
   useEffect(() => {
+    // eslint-disable-next-line no-undef
+    const ac = new AbortController();
     // check the session only if the token is defined and the request didn't come from login screen
-    if (!fromLogin) {
+    if (!fromLogin && status !== 'not_auth') {
       checkSession({
-        // body: {token: storedToken},
         dispatch: authDispatch,
+        ac,
       });
     }
-  }, [authDispatch, fromLogin]);
+    return () => ac.abort();
+  }, [authDispatch, fromLogin, status]);
 
   useEffect(() => {
     // store the token only if request came from login screen and the status is authenticated
-    (async () => {
+    async function setToken() {
       if (status === 'auth' && fromLogin) {
-        // setToken(token);
-        // await EncryptedStorage.setItem(key, JSON.stringify({[prop]: value}));
         await EncryptedStorage.setItem(
           'user_session',
           JSON.stringify({token: token}),
         );
       }
-    })();
+    }
+    setToken();
+    // return () => ();
   }, [fromLogin, status, token]);
 
   return {
-    // storedToken,
     user,
     token,
     error,

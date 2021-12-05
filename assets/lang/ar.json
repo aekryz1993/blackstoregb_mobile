@@ -1,10 +1,15 @@
 {
+  "loading": "جاري التحميل",
   "login": {
     "welcome": "مرحبا",
     "login_txt": "تسجيل الدخول للمتابعة",
     "input_email_label": "اسم المستخدم",
     "input_password_label": "كلمة السر",
     "login_button": "تسجيل الدخول",
-    "loading_text": "جاري تسجيل الدخول"
+    "loading_text": "جاري تسجيل الدخول",
+    "auth_warning_title": "خطأ في إدخال العنوان البريدي أو كلمة السر"
+  },
+  "common_elements": {
+    "logout": "خروج"
   }
 }

@@ -35,9 +35,6 @@ export default function () {
         ) : (
           <Stack.Screen name="Login" component={Login} />
         )}
-        {/* <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Consumer" component={Consumer} />
-        <Stack.Screen name="Admin" component={Admin} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

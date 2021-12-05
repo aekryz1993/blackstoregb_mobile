@@ -1,18 +1,30 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import {
+  Spinner,
+  HStack,
+  Heading,
+  Center,
+  NativeBaseProvider,
+} from 'native-base';
+import ar from '../../assets/lang/ar.json';
 
-export default function () {
+const loadingText = ar.loading;
+
+export default () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>Loading Screen</Text>
-    </SafeAreaView>
+    <NativeBaseProvider>
+      <Center flex={1} px="3">
+        <HStack space={2} alignItems="center">
+          <Spinner
+            color="tertiary.900"
+            size="lg"
+            accessibilityLabel="Loading posts"
+          />
+          <Heading color="tertiary.900" fontSize="xl">
+            {loadingText}
+          </Heading>
+        </HStack>
+      </Center>
+    </NativeBaseProvider>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+};

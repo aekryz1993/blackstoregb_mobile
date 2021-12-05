@@ -5,10 +5,11 @@ function getUrl(routePath) {
   return `${HOST}/${routePath}`;
 }
 
-export const getApi = async routePath => {
+export const getApi = async ({routePath, ac}) => {
   try {
     const response = await fetch(getUrl(routePath), {
       method: 'GET',
+      signal: ac?.signal,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -26,10 +27,11 @@ export const getApi = async routePath => {
   }
 };
 
-export const postApi = async ({routePath, body}) => {
+export const postApi = async ({routePath, body, ac}) => {
   try {
     const response = await fetch(getUrl(routePath), {
       method: 'POST',
+      signal: ac?.signal,
       headers: {
         'Content-Type': 'application/json',
       },

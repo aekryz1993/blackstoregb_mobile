@@ -22,7 +22,7 @@ export const reducer = (state, action) => {
         ...state,
         status: 'auth',
         user: action.payload.user,
-        token: null,
+        token: action.payload.token,
         error: null,
       };
     case 'LOGIN_FAILED':
@@ -33,11 +33,6 @@ export const reducer = (state, action) => {
         token: null,
         error: action.payload.error,
         fromLogin: false,
-      };
-    case 'SETUPTOKEN':
-      return {
-        ...state,
-        token: action.payload.token,
       };
     case 'AUTHED_SESSION':
       return {
@@ -54,8 +49,12 @@ export const reducer = (state, action) => {
         status: 'not_auth',
         user: {},
         token: null,
-        error: null,
         fromLogin: false,
+      };
+    case 'SETUPTOKEN':
+      return {
+        ...state,
+        ...action.payload,
       };
     case 'LOGOUT_REQUEST':
       return {
@@ -64,6 +63,7 @@ export const reducer = (state, action) => {
         fromLogin: false,
       };
     case 'LOGOUT_SUCCEED':
+      console.log(state);
       return {
         ...state,
         status: 'not_auth',

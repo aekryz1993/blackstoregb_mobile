@@ -1,10 +1,15 @@
 {
+  "loading": "Loading",
   "login": {
     "welcome": "Welcome",
     "login_txt": "Sign in to continue",
     "input_email_label": "Username or Email",
     "input_password_label": "Password",
     "login_button": "Sign in",
-    "loading_text": "Connecting"
+    "loading_text": "Connecting",
+    "auth_warning_title": "Invalid email address or password"
+  },
+  "common_elements": {
+    "logout": "Logout"
   }
 }

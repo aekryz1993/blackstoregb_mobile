@@ -9,26 +9,29 @@ export default () => {
   const isAuth = Object.keys(user).length !== 0 && isActive;
 
   useEffect(() => {
+    let doUpdate = true;
+
     switch (status) {
       case 'not_auth':
-        setDirection('login');
+        doUpdate && setDirection('login');
         break;
       case 'loading':
-        setDirection('loading');
+        doUpdate && setDirection('loading');
         break;
       case 'auth':
         if (isAuth && isAdmin) {
-          setDirection('admin');
+          doUpdate && setDirection('admin');
         } else if (isAuth && !isAdmin) {
-          setDirection('consumer');
+          doUpdate && setDirection('consumer');
         }
         break;
       case 'error':
-        setDirection('error');
+        doUpdate && setDirection('error');
         break;
       default:
         break;
     }
+    return () => (doUpdate = false);
   }, [isAdmin, isAuth, status]);
 
   return {
